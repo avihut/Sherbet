@@ -18,6 +18,9 @@
 		668E3B392428D9880049BF7C /* ChatbotWebApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B382428D9880049BF7C /* ChatbotWebApp.swift */; };
 		668E3B492428FA790049BF7C /* RemoteChatbotServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */; };
 		668E3B4C242905C90049BF7C /* MockLocalChatbotServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4B242905C90049BF7C /* MockLocalChatbotServerTests.swift */; };
+		668E3B4E242966690049BF7C /* Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4D242966690049BF7C /* Questionnaire.swift */; };
+		668E3B50242966A00049BF7C /* WelcomeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4F242966A00049BF7C /* WelcomeBot.swift */; };
+		668E3B52242966CA0049BF7C /* Chatbot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B51242966CA0049BF7C /* Chatbot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteChatbotServer.swift; sourceTree = "<group>"; };
 		668E3B4A242905C80049BF7C /* ChatbotTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatbotTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		668E3B4B242905C90049BF7C /* MockLocalChatbotServerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalChatbotServerTests.swift; sourceTree = "<group>"; };
+		668E3B4D242966690049BF7C /* Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questionnaire.swift; sourceTree = "<group>"; };
+		668E3B4F242966A00049BF7C /* WelcomeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBot.swift; sourceTree = "<group>"; };
+		668E3B51242966CA0049BF7C /* Chatbot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chatbot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +137,9 @@
 				668E3B342428C5B60049BF7C /* Handlers.swift */,
 				668E3B362428C77E0049BF7C /* Router.swift */,
 				668E3B382428D9880049BF7C /* ChatbotWebApp.swift */,
+				668E3B4D242966690049BF7C /* Questionnaire.swift */,
+				668E3B4F242966A00049BF7C /* WelcomeBot.swift */,
+				668E3B51242966CA0049BF7C /* Chatbot.swift */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -252,6 +261,9 @@
 				668E3B492428FA790049BF7C /* RemoteChatbotServer.swift in Sources */,
 				668E3B372428C77E0049BF7C /* Router.swift in Sources */,
 				668E3B352428C5B60049BF7C /* Handlers.swift in Sources */,
+				668E3B52242966CA0049BF7C /* Chatbot.swift in Sources */,
+				668E3B4E242966690049BF7C /* Questionnaire.swift in Sources */,
+				668E3B50242966A00049BF7C /* WelcomeBot.swift in Sources */,
 				668E3B392428D9880049BF7C /* ChatbotWebApp.swift in Sources */,
 				668E3B1E2428C22D0049BF7C /* SceneDelegate.swift in Sources */,
 			);

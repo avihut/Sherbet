@@ -17,7 +17,7 @@ enum ChatbotServerEndpoint: String {
 
 protocol RemoteChatbotServer {
     func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
-    func send(answer: String, for question: BotQuestion, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
+    func send(answer: String, for question: Question, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
 }
 
 
@@ -37,7 +37,7 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
         post(to: .startChat, request: startChatRequest, completionHandler: completionHandler)
     }
     
-    func send(answer message: String, for question: BotQuestion, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ()) {
+    func send(answer message: String, for question: Question, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ()) {
         let sendAnswerRequest = SendAnswerRequest(token: token, botQuestion: question, message: message)
         post(to: .sendAnswer, request: sendAnswerRequest, completionHandler: completionHandler)
     }
@@ -139,7 +139,7 @@ extension AnswerInputType: Codable {
 }
 
 struct MessageResponse: Codable {
-    let botQuestion: BotQuestion?
+    let botQuestion: Question?
     let messages: [String]
     let messageFieldPlaceholder: String?
     let inputType: AnswerInputType?
@@ -148,6 +148,6 @@ struct MessageResponse: Codable {
 
 struct SendAnswerRequest: Codable, TokenHoldingRequest {
     let token: String
-    let botQuestion: BotQuestion
+    let botQuestion: Question
     let message: String
 }

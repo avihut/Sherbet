@@ -31,7 +31,7 @@ class MockLocalChatbotServerTests: XCTestCase {
         server.startChat(withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourName)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
                 XCTAssertEqual(response.messages[0], "Hello, I am Avihu!")
                 XCTAssertEqual(response.messages[1], "What is your name?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "Your name")
@@ -63,7 +63,7 @@ class MockLocalChatbotServerTests: XCTestCase {
         server.startChat(withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourName)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
                 XCTAssertEqual(response.messages[0], "Hello, I am Avihu!")
                 XCTAssertEqual(response.messages[1], "What is your name?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "Your name")
@@ -74,10 +74,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Slartibartfast", for: BotQuestion.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Slartibartfast", for: Question.whatIsYourName, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourPhoneNumber)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
                 XCTAssertEqual(response.messages[0], "Nice to meet you, Slartibartfast")
                 XCTAssertEqual(response.messages[1], "What is your phone number?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "0505432123")
@@ -88,10 +88,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "0505432123", for: BotQuestion.whatIsYourPhoneNumber, withToken: token) { result in
+        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.doYouAgreeToServiceTerms)
+                XCTAssertEqual(response.botQuestion, Question.doYouAgreeToServiceTerms)
                 XCTAssertEqual(response.messages[0], "Do you agree to our terms of service?")
                 XCTAssertEqual(response.messageFieldPlaceholder, nil)
                 XCTAssertEqual(response.inputType, AnswerInputType.selection(options: ["No", "Yes"]))
@@ -101,10 +101,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Yes", for: BotQuestion.doYouAgreeToServiceTerms, withToken: token) { result in
+        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatToDoNowThatYouFinished)
+                XCTAssertEqual(response.botQuestion, Question.whatToDoNowThatYouFinished)
                 XCTAssertEqual(response.messages[0], "Thanks")
                 XCTAssertEqual(response.messages[1], "This is your last step")
                 XCTAssertEqual(response.messages[2], "What do you want to do now?")
@@ -116,7 +116,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Exit", for: BotQuestion.whatToDoNowThatYouFinished, withToken: token) { result in
+        server.send(answer: "Exit", for: Question.whatToDoNowThatYouFinished, withToken: token) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, nil)
@@ -138,7 +138,7 @@ class MockLocalChatbotServerTests: XCTestCase {
         server.startChat(withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourName)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
                 XCTAssertEqual(response.messages[0], "Hello, I am Avihu!")
                 XCTAssertEqual(response.messages[1], "What is your name?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "Your name")
@@ -149,10 +149,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Slartibartfast", for: BotQuestion.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Slartibartfast", for: Question.whatIsYourName, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourPhoneNumber)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
                 XCTAssertEqual(response.messages[0], "Nice to meet you, Slartibartfast")
                 XCTAssertEqual(response.messages[1], "What is your phone number?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "0505432123")
@@ -163,10 +163,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "0505432123", for: BotQuestion.whatIsYourPhoneNumber, withToken: token) { result in
+        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.doYouAgreeToServiceTerms)
+                XCTAssertEqual(response.botQuestion, Question.doYouAgreeToServiceTerms)
                 XCTAssertEqual(response.messages[0], "Do you agree to our terms of service?")
                 XCTAssertEqual(response.messageFieldPlaceholder, nil)
                 XCTAssertEqual(response.inputType, AnswerInputType.selection(options: ["No", "Yes"]))
@@ -176,10 +176,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Yes", for: BotQuestion.doYouAgreeToServiceTerms, withToken: token) { result in
+        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatToDoNowThatYouFinished)
+                XCTAssertEqual(response.botQuestion, Question.whatToDoNowThatYouFinished)
                 XCTAssertEqual(response.messages[0], "Thanks")
                 XCTAssertEqual(response.messages[1], "This is your last step")
                 XCTAssertEqual(response.messages[2], "What do you want to do now?")
@@ -191,10 +191,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Restart", for: BotQuestion.whatToDoNowThatYouFinished, withToken: token) { result in
+        server.send(answer: "Restart", for: Question.whatToDoNowThatYouFinished, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourName)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
                 XCTAssertEqual(response.messages[0], "Hello, I am Avihu!")
                 XCTAssertEqual(response.messages[1], "What is your name?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "Your name")
@@ -205,10 +205,10 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Majikthighs", for: BotQuestion.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Majikthighs", for: Question.whatIsYourName, withToken: token) { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourPhoneNumber)
+                XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
                 XCTAssertEqual(response.messages[0], "Nice to meet you, Majikthighs")
                 XCTAssertEqual(response.messages[1], "What is your phone number?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "0505432123")
