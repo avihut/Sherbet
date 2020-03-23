@@ -17,7 +17,7 @@ struct ChatbotWebApp {
     func createApp() -> Router {
         var router = Router()
         
-        router.register(handler: ChatBotHandler(), for: .startChat)
+        router.register(handler: StartChatHandler(), for: .startChat)
         
         return router
     }

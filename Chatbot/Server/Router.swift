@@ -21,6 +21,28 @@ protocol RequestHandling {
     func handle(request: Data) -> RouteResult
 }
 
+protocol JsonRequestHandling: RequestHandling {
+    associatedtype Request
+    associatedtype Response
+    
+    func handle(parsedRequest: Request) -> Response
+}
+
+extension JsonRequestHandling where Request: Codable, Response: Codable {
+    func handle(request requestData: Data) -> RouteResult {
+        guard let request = try? JSONDecoder().decode(Request.self, from: requestData) else {
+            return .failure(RequestError.failedParsingRequest)
+        }
+        
+        let response = handle(parsedRequest: request)
+        if let responseData = try? JSONEncoder().encode(response) {
+            return .success(responseData)
+        } else {
+            return .failure(Router.RouterError.internalError)
+        }
+    }
+}
+
 
 struct Router {
     enum RouterError: Error {
