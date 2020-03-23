@@ -25,7 +25,7 @@ protocol JsonRequestHandling: RequestHandling {
     associatedtype Request
     associatedtype Response
     
-    func handle(parsedRequest: Request) -> Response
+    func handle(parsedRequest: Request) -> Result<Response, Error>
 }
 
 extension JsonRequestHandling where Request: Decodable, Response: Encodable {
@@ -34,11 +34,16 @@ extension JsonRequestHandling where Request: Decodable, Response: Encodable {
             return .failure(RequestError.failedParsingRequest)
         }
         
-        let response = handle(parsedRequest: request)
-        if let responseData = try? JSONEncoder().encode(response) {
-            return .success(responseData)
-        } else {
-            return .failure(Router.RouterError.internalError)
+        let result = handle(parsedRequest: request)
+        switch result {
+        case .success(let responseData):
+            guard let response = try? JSONEncoder().encode(responseData) else {
+                return .failure(Router.RouterError.internalError)
+            }
+            return .success(response)
+            
+        case .failure(let error):
+            return .failure(error)
         }
     }
 }

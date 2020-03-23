@@ -9,15 +9,26 @@
 import Foundation
 
 
+enum ChatbotError: Error {
+    case invalidToken
+}
+
+
 struct StartChatHandler: JsonRequestHandling {
     typealias Request = StartChatRequest
     typealias Response = StartChatResponse
     
-    func handle(parsedRequest request: StartChatRequest) -> StartChatResponse {
+    private let token = "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE"
+    
+    func handle(parsedRequest request: StartChatRequest) -> Result<StartChatResponse, Error> {
         return startChat(token: request.token)
     }
     
-    fileprivate func startChat(token: String) -> StartChatResponse {
-        return StartChatResponse(messages: ["Hello from chatbot!"])
+    private func startChat(token: String) -> Result<StartChatResponse, Error> {
+        guard token == self.token else {
+            return .failure(ChatbotError.invalidToken)
+        }
+        
+        return .success(StartChatResponse(messages: ["Hello from chatbot!"]))
     }
 }
