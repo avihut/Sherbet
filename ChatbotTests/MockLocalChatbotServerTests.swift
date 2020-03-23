@@ -12,7 +12,6 @@ import XCTest
 
 class MockLocalChatbotServerTests: XCTestCase {
     
-//    private var webAppRouter: Router?
     private var server: MockLocalChatbotServer?
 
     override func setUp() {
@@ -34,7 +33,5 @@ class MockLocalChatbotServerTests: XCTestCase {
             case .failure(_): fatalError("Did not expect an error starting a chat.")
             }
         }
-
-//        let result = router.call(endpoint: .startChat, with: "")
     }
 }
