@@ -17,7 +17,7 @@ enum ChatbotServerEndpoint: String {
 
 protocol RemoteChatbotServer {
     func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
-    func send(answer message: String, for question: BotQuestion, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
+    func send(answer: String, for question: BotQuestion, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
 }
 
 
@@ -80,13 +80,6 @@ struct StartChatRequest: Codable, TokenHoldingRequest {
     let token: String
 }
 
-enum BotQuestion: Int, Codable {
-    case whatIsYourName = 0
-    case whatIsYourPhoneNumber = 1
-    case doYouAgreeToServiceTerms = 2
-    case whatToDoNowThatYouFinished = 3
-}
-
 enum AnswerInputType {
     case numeric
     case phone
@@ -146,10 +139,11 @@ extension AnswerInputType: Codable {
 }
 
 struct MessageResponse: Codable {
-    let botQuestion: BotQuestion
+    let botQuestion: BotQuestion?
     let messages: [String]
-    let messageFieldPlaceholder: String
+    let messageFieldPlaceholder: String?
     let inputType: AnswerInputType
+    let endChat: Bool
 }
 
 struct SendAnswerRequest: Codable, TokenHoldingRequest {
