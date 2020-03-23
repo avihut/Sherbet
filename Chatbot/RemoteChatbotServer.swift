@@ -32,32 +32,35 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
     
     func startChat(withToken token: String, withHandler completionHandler: (Result<StartChatResponse, Error>) -> ()) {
         let startChatRequest = StartChatRequest(token: token)
-        let payload = try? JSONEncoder().encode(startChatRequest)
-        post(to: .startChat, payload: payload) { result in
-            switch result {
-            case .success(let response):
-                guard let startChatResponse = try? JSONDecoder().decode(StartChatResponse.self, from: response) else {
-                    completionHandler(.failure(ServerError.failedParsingResponse))
-                    return
-                }
-                
-                completionHandler(.success(startChatResponse))
-            case .failure(let error):
-                completionHandler(.failure(error))
+        post(to: .startChat, request: startChatRequest, completionHandler: completionHandler)
+    }
+    
+    private func post<Request: Encodable, Response: Decodable>(to endpoint: ChatbotServerEndpoint, request: Request, completionHandler: (Result<Response, Error>) -> ()) {
+        let payload = try? JSONEncoder().encode(request)
+        let payloadData = sanitize(payload: payload)
+        let result = mockServer.call(endpoint: endpoint.rawValue, with: payloadData)
+        
+        switch result {
+        case .success(let responseData):
+            guard let response = try? JSONDecoder().decode(Response.self, from: responseData) else {
+                completionHandler(.failure(ServerError.failedParsingResponse))
+                return
             }
+            completionHandler(.success(response))
+            
+        case .failure(let error):
+            completionHandler(.failure(error))
         }
     }
     
-    private func post(to endpoint: ChatbotServerEndpoint, payload: Data?, completionHandler: (Result<Data, Error>) -> ()) {
+    private func sanitize(payload: Data?) -> Data {
         let payloadData: Data
         if let payload = payload {
             payloadData = payload
         } else {
             payloadData = try! JSONEncoder().encode("{}".data(using: .utf8)!)
         }
-        
-        let result = mockServer.call(endpoint: ChatbotServerEndpoint.startChat.rawValue, with: payloadData)
-        completionHandler(result)
+        return payloadData
     }
 }
 

@@ -28,7 +28,7 @@ protocol JsonRequestHandling: RequestHandling {
     func handle(parsedRequest: Request) -> Response
 }
 
-extension JsonRequestHandling where Request: Codable, Response: Codable {
+extension JsonRequestHandling where Request: Decodable, Response: Encodable {
     func handle(request requestData: Data) -> RouteResult {
         guard let request = try? JSONDecoder().decode(Request.self, from: requestData) else {
             return .failure(RequestError.failedParsingRequest)
