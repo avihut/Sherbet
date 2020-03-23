@@ -12,12 +12,14 @@ import Foundation
 struct ChatbotWebApp {
     enum endpoint: String {
         case startChat = "/start_chat"
+        case sendAnswer = "/send_answer"
     }
     
     func createApp() -> Router {
         var router = Router()
         
         router.register(handler: StartChatHandler(), for: .startChat)
+        router.register(handler: SendAnswerHandler(), for: .sendAnswer)
         
         return router
     }
