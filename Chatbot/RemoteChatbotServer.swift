@@ -142,7 +142,7 @@ struct MessageResponse: Codable {
     let botQuestion: BotQuestion?
     let messages: [String]
     let messageFieldPlaceholder: String?
-    let inputType: AnswerInputType
+    let inputType: AnswerInputType?
     let endChat: Bool
 }
 

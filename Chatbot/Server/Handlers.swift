@@ -117,6 +117,11 @@ struct Chatbot {
         guard let question = question, let nextQuestion = questionnaire.questionCourse[question] else {
             throw ChatbotError.invalidQuestioningCourse
         }
+        
+        if nextQuestion == nil && shouldRestart {
+            return initialQuestion
+        }
+        
         return nextQuestion
     }
     
@@ -129,6 +134,16 @@ struct Chatbot {
             messageFieldPlaceholder: questionDefinition.responseHint,
             inputType: questionDefinition.responseInput,
             endChat: false
+        )
+    }
+    
+    var endMessage: MessageResponse {
+        return MessageResponse(
+            botQuestion: nil,
+            messages: format(messages: questionnaire.endResponse),
+            messageFieldPlaceholder: nil,
+            inputType: nil,
+            endChat: true
         )
     }
     
@@ -149,10 +164,22 @@ struct Chatbot {
     }
     
     private func formatMessages(for question: QuestionDefinition) -> [String] {
-        return question.messages.map({ attributableMessage -> String in
+        return format(messages: question.messages)
+    }
+    
+    private func format(messages: [AttributableMessage]) -> [String] {
+        messages.map({ attributableMessage -> String in
             let attributeValues = attributableMessage.attributeNames.compactMap({ self.attributes[$0] })
             return attributableMessage.format(with: attributeValues)
         })
+    }
+    
+    private var shouldRestart: Bool {
+        guard let restartValue = attributes["should_restart"] else {
+            return false
+        }
+        
+        return restartValue == "Restart"
     }
 }
 
@@ -222,7 +249,7 @@ struct SendAnswerHandler: JsonRequestHandling {
                 let messageResponse = try welcomeBot.render(question: nextQuestion)
                 return .success(messageResponse)
             } else {
-                return .failure(NotImplementedError())
+                return .success(welcomeBot.endMessage)
             }
         } catch {
             return .failure(error)
