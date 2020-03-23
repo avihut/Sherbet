@@ -56,15 +56,39 @@
 		668E3B1A2428C22D0049BF7C /* Chatbot */ = {
 			isa = PBXGroup;
 			children = (
-				668E3B1B2428C22D0049BF7C /* AppDelegate.swift */,
-				668E3B1D2428C22D0049BF7C /* SceneDelegate.swift */,
-				668E3B1F2428C22D0049BF7C /* ViewController.swift */,
-				668E3B212428C22D0049BF7C /* Main.storyboard */,
+				668E3B2F2428C5240049BF7C /* App Lifecycle */,
+				668E3B302428C5380049BF7C /* View */,
 				668E3B242428C22F0049BF7C /* Assets.xcassets */,
-				668E3B262428C22F0049BF7C /* LaunchScreen.storyboard */,
 				668E3B292428C22F0049BF7C /* Info.plist */,
 			);
 			path = Chatbot;
+			sourceTree = "<group>";
+		};
+		668E3B2F2428C5240049BF7C /* App Lifecycle */ = {
+			isa = PBXGroup;
+			children = (
+				668E3B1B2428C22D0049BF7C /* AppDelegate.swift */,
+				668E3B1D2428C22D0049BF7C /* SceneDelegate.swift */,
+			);
+			path = "App Lifecycle";
+			sourceTree = "<group>";
+		};
+		668E3B302428C5380049BF7C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				668E3B312428C5470049BF7C /* Storyboards */,
+				668E3B1F2428C22D0049BF7C /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		668E3B312428C5470049BF7C /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				668E3B262428C22F0049BF7C /* LaunchScreen.storyboard */,
+				668E3B212428C22D0049BF7C /* Main.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
