@@ -69,6 +69,66 @@ struct StartChatRequest: Codable {
     let token: String
 }
 
+enum AnswerInputType {
+    case numeric
+    case phone
+    case text
+    case email
+    case selection(options: [String])
+}
+
+extension AnswerInputType: Equatable {}
+
+extension AnswerInputType: Codable {
+    enum Key: CodingKey {
+        case rawValue
+        case associatedValue
+    }
+    
+    enum CodingError: Error {
+        case unknownValue
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Key.self)
+        let rawValue = try container.decode(Int.self, forKey: .rawValue)
+        switch rawValue {
+        case 0:
+            self = .numeric
+        case 1:
+            self = .phone
+        case 2:
+            self = .text
+        case 3:
+            self = .email
+        case 4:
+            let options = try container.decode([String].self, forKey: .associatedValue)
+            self = .selection(options: options)
+        default:
+            throw CodingError.unknownValue
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: Key.self)
+        switch self {
+        case .numeric:
+            try container.encode(0, forKey: .rawValue)
+        case .phone:
+            try container.encode(1, forKey: .rawValue)
+        case .text:
+            try container.encode(2, forKey: .rawValue)
+        case .email:
+            try container.encode(3, forKey: .rawValue)
+        case .selection(let options):
+            try container.encode(4, forKey: .rawValue)
+            try container.encode(options, forKey: .associatedValue)
+        }
+    }
+}
+
 struct StartChatResponse: Codable {
     let messages: [String]
+    let messageFieldPlaceholder: String
+    let inputType: AnswerInputType
 }

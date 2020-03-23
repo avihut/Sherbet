@@ -29,6 +29,10 @@ struct StartChatHandler: JsonRequestHandling {
             return .failure(ChatbotError.invalidToken)
         }
         
-        return .success(StartChatResponse(messages: ["Hello from chatbot!"]))
+        return .success(StartChatResponse(
+            messages: ["Hello, I am Avihu!", "What is your name?"],
+            messageFieldPlaceholder: "Your name",
+            inputType: .text
+        ))
     }
 }
