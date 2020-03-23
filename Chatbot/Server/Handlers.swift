@@ -31,6 +31,7 @@ struct QuestionDefinition {
     let messages: [AttributableMessage]
     let responseHint: String?
     let responseInput: AnswerInputType
+    let responseAttributeName: String?
 }
 
 
@@ -57,7 +58,8 @@ let welcomeQuestionnaire = Questionnaire(
                 AttributableMessage(text: "What is your name?", attributeNames: [])
             ],
             responseHint: "Your name",
-            responseInput: .text
+            responseInput: .text,
+            responseAttributeName: "user_name"
         ),
         .whatIsYourPhoneNumber : QuestionDefinition(
             messages: [
@@ -65,14 +67,16 @@ let welcomeQuestionnaire = Questionnaire(
                 AttributableMessage(text: "What is your phone number?", attributeNames: [])
             ],
             responseHint: "0505432123",
-            responseInput: .phone
+            responseInput: .phone,
+            responseAttributeName: "phone_number"
         ),
         .doYouAgreeToServiceTerms : QuestionDefinition(
             messages: [
                 AttributableMessage(text: "Do you agree to our terms of service?", attributeNames: [])
             ],
             responseHint: nil,
-            responseInput: .selection(options: ["No", "Yes"])
+            responseInput: .selection(options: ["No", "Yes"]),
+            responseAttributeName: "tos_agreement"
         ),
         .whatToDoNowThatYouFinished : QuestionDefinition(
             messages: [
@@ -81,7 +85,8 @@ let welcomeQuestionnaire = Questionnaire(
                 AttributableMessage(text: "What do you want to do now?", attributeNames: [])
             ],
             responseHint: nil,
-            responseInput: .selection(options: ["Restart", "Exit"])
+            responseInput: .selection(options: ["Restart", "Exit"]),
+            responseAttributeName: "should_restart"
         )
     ],
     endResponse: [
@@ -116,9 +121,7 @@ struct Chatbot {
     }
     
     func render(question: BotQuestion) throws -> MessageResponse {
-        guard let questionDefinition = questionnaire.questionDefinitions[question] else {
-            throw ChatbotError.unkownQuestion(question)
-        }
+        let questionDefinition = try getDefinition(for: question)
         
         return MessageResponse(
             botQuestion: question,
@@ -127,6 +130,22 @@ struct Chatbot {
             inputType: questionDefinition.responseInput,
             endChat: false
         )
+    }
+    
+    mutating func processAnswer(message: String, for question: BotQuestion) throws {
+        let questionDefinition = try getDefinition(for: question)
+        guard let attributeName = questionDefinition.responseAttributeName else {
+            return
+        }
+        
+        attributes[attributeName] = message
+    }
+    
+    private func getDefinition(for question: BotQuestion) throws -> QuestionDefinition {
+        guard let questionDefinition = questionnaire.questionDefinitions[question] else {
+            throw ChatbotError.unkownQuestion(question)
+        }
+        return questionDefinition
     }
     
     private func formatMessages(for question: QuestionDefinition) -> [String] {
@@ -138,7 +157,7 @@ struct Chatbot {
 }
 
 
-let welcomeBot = Chatbot(questionnaire: welcomeQuestionnaire, botName: "Avihu")
+var welcomeBot = Chatbot(questionnaire: welcomeQuestionnaire, botName: "Avihu")
 
 
 struct NotImplementedError: Error {}
@@ -193,10 +212,20 @@ struct SendAnswerHandler: JsonRequestHandling {
             return .failure(ChatbotServerError.unauthenticatedRequest)
         }
         
-        return answerQuestion(botQuestion: request.botQuestion, answer: request.message)
+        return answerQuestion(lastQuestion: request.botQuestion, answer: request.message)
     }
     
-    private func answerQuestion(botQuestion: BotQuestion, answer: String) -> Result<MessageResponse, Error> {
-        return .failure(NotImplementedError())
+    private func answerQuestion(lastQuestion: BotQuestion, answer message: String) -> Result<MessageResponse, Error> {
+        do {
+            try welcomeBot.processAnswer(message: message, for: lastQuestion)
+            if let nextQuestion = try welcomeBot.getQuestion(after: lastQuestion) {
+                let messageResponse = try welcomeBot.render(question: nextQuestion)
+                return .success(messageResponse)
+            } else {
+                return .failure(NotImplementedError())
+            }
+        } catch {
+            return .failure(error)
+        }
     }
 }
