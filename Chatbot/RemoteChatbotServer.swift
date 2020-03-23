@@ -11,6 +11,7 @@ import Foundation
 
 enum ChatbotServerEndpoint: String {
     case startChat = "/start_chat"
+    case send_message = ""
 }
 
 
@@ -67,6 +68,13 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
 
 struct StartChatRequest: Codable {
     let token: String
+}
+
+enum BotQuestion: Int, Codable {
+    case whatIsYourName = 0
+    case whatIsYourPhoneNumber = 1
+    case doYouAgreeToServiceTerms = 2
+    case whatToDoNowThatYouFinished = 3
 }
 
 enum AnswerInputType {
@@ -128,6 +136,7 @@ extension AnswerInputType: Codable {
 }
 
 struct MessageResponse: Codable {
+    let botQuestion: BotQuestion
     let messages: [String]
     let messageFieldPlaceholder: String
     let inputType: AnswerInputType

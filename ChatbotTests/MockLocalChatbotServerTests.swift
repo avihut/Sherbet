@@ -32,10 +32,12 @@ class MockLocalChatbotServerTests: XCTestCase {
         server.startChat(withToken: token) { result in
             switch result {
             case .success(let response):
+                XCTAssertEqual(response.botQuestion, BotQuestion.whatIsYourName)
                 XCTAssertEqual(response.messages[0], "Hello, I am Avihu!")
                 XCTAssertEqual(response.messages[1], "What is your name?")
                 XCTAssertEqual(response.messageFieldPlaceholder, "Your name")
                 XCTAssertEqual(response.inputType, AnswerInputType.text)
+                
             case .failure(_): fatalError("Did not expect an error starting a chat.")
             }
         }

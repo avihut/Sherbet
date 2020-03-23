@@ -30,6 +30,7 @@ struct StartChatHandler: JsonRequestHandling {
         }
         
         return .success(MessageResponse(
+            botQuestion: .whatIsYourName,
             messages: ["Hello, I am Avihu!", "What is your name?"],
             messageFieldPlaceholder: "Your name",
             inputType: .text
