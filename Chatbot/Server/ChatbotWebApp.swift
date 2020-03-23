@@ -17,7 +17,7 @@ struct ChatbotWebApp {
     func createApp() -> Router {
         var router = Router()
         
-        router.register(handler: ChatBotHandler().startChat(request:), for: .startChat)
+        router.register(handler: ChatBotHandler(), for: .startChat)
         
         return router
     }
@@ -25,11 +25,11 @@ struct ChatbotWebApp {
 
 
 extension Router {
-    mutating func register(handler: @escaping RouteHandler, for endpoint: ChatbotWebApp.endpoint) {
+    mutating func register(handler: RequestHandling, for endpoint: ChatbotWebApp.endpoint) {
         register(handler: handler, for: endpoint.rawValue)
     }
     
-    func call(endpoint: ChatbotWebApp.endpoint, with payload: String) -> RouteResult {
+    func call(endpoint: ChatbotWebApp.endpoint, with payload: Data) -> RouteResult {
         return call(endpoint: endpoint.rawValue, with: payload)
     }
 }

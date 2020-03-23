@@ -9,26 +9,36 @@
 import Foundation
 
 
-typealias RouteResult = Result<String, Error>
-typealias RouteHandler = (String) -> RouteResult
+typealias RouteResult = Result<Data, Error>
+
+
+enum RequestError: Error {
+    case failedParsingRequest
+}
+
+
+protocol RequestHandling {
+    func handle(request: Data) -> RouteResult
+}
 
 
 struct Router {
     enum RouterError: Error {
         case unknownEndpoint(endpoint: String)
+        case internalError
     }
     
-    private var routeHandlers: [String : RouteHandler] = [:]
+    private var routeHandlers: [String : RequestHandling] = [:]
     
-    mutating func register(handler: @escaping RouteHandler, for endpoint: String) {
+    mutating func register(handler: RequestHandling, for endpoint: String) {
         routeHandlers[endpoint] = handler
     }
     
-    func call(endpoint: String, with payload: String) -> RouteResult {
+    func call(endpoint: String, with payload: Data) -> RouteResult {
         guard let handler = routeHandlers[endpoint] else {
             return .failure(RouterError.unknownEndpoint(endpoint: endpoint))
         }
         
-        return handler(payload)
+        return handler.handle(request: payload)
     }
 }

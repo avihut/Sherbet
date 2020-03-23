@@ -16,7 +16,8 @@
 		668E3B352428C5B60049BF7C /* ChatBotHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B342428C5B60049BF7C /* ChatBotHandler.swift */; };
 		668E3B372428C77E0049BF7C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B362428C77E0049BF7C /* Router.swift */; };
 		668E3B392428D9880049BF7C /* ChatbotWebApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B382428D9880049BF7C /* ChatbotWebApp.swift */; };
-		668E3B412428DB980049BF7C /* ChatbotWebAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B402428DB980049BF7C /* ChatbotWebAppTests.swift */; };
+		668E3B492428FA790049BF7C /* RemoteChatbotServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */; };
+		668E3B4C242905C90049BF7C /* MockLocalChatbotServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4B242905C90049BF7C /* MockLocalChatbotServerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,8 +43,10 @@
 		668E3B362428C77E0049BF7C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		668E3B382428D9880049BF7C /* ChatbotWebApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatbotWebApp.swift; sourceTree = "<group>"; };
 		668E3B3E2428DB980049BF7C /* ChatbotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatbotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		668E3B402428DB980049BF7C /* ChatbotWebAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatbotWebAppTests.swift; sourceTree = "<group>"; };
 		668E3B422428DB980049BF7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteChatbotServer.swift; sourceTree = "<group>"; };
+		668E3B4A242905C80049BF7C /* ChatbotTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatbotTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		668E3B4B242905C90049BF7C /* MockLocalChatbotServerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalChatbotServerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,7 @@
 				668E3B302428C5380049BF7C /* View */,
 				668E3B242428C22F0049BF7C /* Assets.xcassets */,
 				668E3B292428C22F0049BF7C /* Info.plist */,
+				668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */,
 			);
 			path = Chatbot;
 			sourceTree = "<group>";
@@ -134,8 +138,9 @@
 		668E3B3F2428DB980049BF7C /* ChatbotTests */ = {
 			isa = PBXGroup;
 			children = (
-				668E3B402428DB980049BF7C /* ChatbotWebAppTests.swift */,
+				668E3B4B242905C90049BF7C /* MockLocalChatbotServerTests.swift */,
 				668E3B422428DB980049BF7C /* Info.plist */,
+				668E3B4A242905C80049BF7C /* ChatbotTests-Bridging-Header.h */,
 			);
 			path = ChatbotTests;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 					};
 					668E3B3D2428DB980049BF7C = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 						TestTargetID = 668E3B172428C22D0049BF7C;
 					};
 				};
@@ -243,6 +249,7 @@
 			files = (
 				668E3B202428C22D0049BF7C /* ViewController.swift in Sources */,
 				668E3B1C2428C22D0049BF7C /* AppDelegate.swift in Sources */,
+				668E3B492428FA790049BF7C /* RemoteChatbotServer.swift in Sources */,
 				668E3B372428C77E0049BF7C /* Router.swift in Sources */,
 				668E3B352428C5B60049BF7C /* ChatBotHandler.swift in Sources */,
 				668E3B392428D9880049BF7C /* ChatbotWebApp.swift in Sources */,
@@ -254,7 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				668E3B412428DB980049BF7C /* ChatbotWebAppTests.swift in Sources */,
+				668E3B4C242905C90049BF7C /* MockLocalChatbotServerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QNT889H433;
 				INFOPLIST_FILE = ChatbotTests/Info.plist;
@@ -452,6 +460,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.turzion.ChatbotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChatbotTests/ChatbotTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chatbot.app/Chatbot";
@@ -462,6 +472,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QNT889H433;
 				INFOPLIST_FILE = ChatbotTests/Info.plist;
@@ -472,6 +483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.turzion.ChatbotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChatbotTests/ChatbotTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chatbot.app/Chatbot";
