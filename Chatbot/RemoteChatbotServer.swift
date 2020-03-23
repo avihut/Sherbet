@@ -15,7 +15,7 @@ enum ChatbotServerEndpoint: String {
 
 
 protocol RemoteChatbotServer {
-    func startChat(withToken token: String, withHandler completionHandler: (Result<StartChatResponse, Error>) -> ())
+    func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
 }
 
 
@@ -30,7 +30,7 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
         self.mockServer = mockServer
     }
     
-    func startChat(withToken token: String, withHandler completionHandler: (Result<StartChatResponse, Error>) -> ()) {
+    func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ()) {
         let startChatRequest = StartChatRequest(token: token)
         post(to: .startChat, request: startChatRequest, completionHandler: completionHandler)
     }
@@ -127,7 +127,7 @@ extension AnswerInputType: Codable {
     }
 }
 
-struct StartChatResponse: Codable {
+struct MessageResponse: Codable {
     let messages: [String]
     let messageFieldPlaceholder: String
     let inputType: AnswerInputType

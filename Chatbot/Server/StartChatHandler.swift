@@ -16,20 +16,20 @@ enum ChatbotError: Error {
 
 struct StartChatHandler: JsonRequestHandling {
     typealias Request = StartChatRequest
-    typealias Response = StartChatResponse
+    typealias Response = MessageResponse
     
     private let token = "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE"
     
-    func handle(parsedRequest request: StartChatRequest) -> Result<StartChatResponse, Error> {
+    func handle(parsedRequest request: StartChatRequest) -> Result<MessageResponse, Error> {
         return startChat(token: request.token)
     }
     
-    private func startChat(token: String) -> Result<StartChatResponse, Error> {
+    private func startChat(token: String) -> Result<MessageResponse, Error> {
         guard token == self.token else {
             return .failure(ChatbotError.invalidToken)
         }
         
-        return .success(StartChatResponse(
+        return .success(MessageResponse(
             messages: ["Hello, I am Avihu!", "What is your name?"],
             messageFieldPlaceholder: "Your name",
             inputType: .text
