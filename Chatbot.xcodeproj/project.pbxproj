@@ -21,6 +21,7 @@
 		668E3B4E242966690049BF7C /* Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4D242966690049BF7C /* Questionnaire.swift */; };
 		668E3B50242966A00049BF7C /* WelcomeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B4F242966A00049BF7C /* WelcomeBot.swift */; };
 		668E3B52242966CA0049BF7C /* Chatbot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B51242966CA0049BF7C /* Chatbot.swift */; };
+		668E3B54242968EA0049BF7C /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B53242968EA0049BF7C /* ServerConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		668E3B4D242966690049BF7C /* Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questionnaire.swift; sourceTree = "<group>"; };
 		668E3B4F242966A00049BF7C /* WelcomeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBot.swift; sourceTree = "<group>"; };
 		668E3B51242966CA0049BF7C /* Chatbot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chatbot.swift; sourceTree = "<group>"; };
+		668E3B53242968EA0049BF7C /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				668E3B4D242966690049BF7C /* Questionnaire.swift */,
 				668E3B4F242966A00049BF7C /* WelcomeBot.swift */,
 				668E3B51242966CA0049BF7C /* Chatbot.swift */,
+				668E3B53242968EA0049BF7C /* ServerConfiguration.swift */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			files = (
 				668E3B202428C22D0049BF7C /* ViewController.swift in Sources */,
 				668E3B1C2428C22D0049BF7C /* AppDelegate.swift in Sources */,
+				668E3B54242968EA0049BF7C /* ServerConfiguration.swift in Sources */,
 				668E3B492428FA790049BF7C /* RemoteChatbotServer.swift in Sources */,
 				668E3B372428C77E0049BF7C /* Router.swift in Sources */,
 				668E3B352428C5B60049BF7C /* Handlers.swift in Sources */,

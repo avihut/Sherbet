@@ -16,8 +16,8 @@ enum ChatbotServerEndpoint: String {
 
 
 protocol RemoteChatbotServer {
-    func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
-    func send(answer: String, for question: Question, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ())
+    func startChat(withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
+    func send(answer: String, for question: Question, withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
 }
 
 
@@ -32,31 +32,33 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
         self.mockServer = mockServer
     }
     
-    func startChat(withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ()) {
+    func startChat(withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
         let startChatRequest = StartChatRequest(token: token)
         post(to: .startChat, request: startChatRequest, completionHandler: completionHandler)
     }
     
-    func send(answer message: String, for question: Question, withToken token: String, withHandler completionHandler: (Result<MessageResponse, Error>) -> ()) {
+    func send(answer message: String, for question: Question, withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
         let sendAnswerRequest = SendAnswerRequest(token: token, botQuestion: question, message: message)
         post(to: .sendAnswer, request: sendAnswerRequest, completionHandler: completionHandler)
     }
     
-    private func post<Request: Encodable, Response: Decodable>(to endpoint: ChatbotServerEndpoint, request: Request, completionHandler: (Result<Response, Error>) -> ()) {
+    private func post<Request: Encodable, Response: Decodable>(to endpoint: ChatbotServerEndpoint, request: Request, completionHandler: @escaping (Result<Response, Error>) -> ()) {
         let payload = try? JSONEncoder().encode(request)
         let payloadData = sanitize(payload: payload)
         let result = mockServer.call(endpoint: endpoint.rawValue, with: payloadData)
         
-        switch result {
-        case .success(let responseData):
-            guard let response = try? JSONDecoder().decode(Response.self, from: responseData) else {
-                completionHandler(.failure(ServerError.failedParsingResponse))
-                return
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(ServerConfiguration.delay)) {
+            switch result {
+            case .success(let responseData):
+                guard let response = try? JSONDecoder().decode(Response.self, from: responseData) else {
+                    completionHandler(.failure(ServerError.failedParsingResponse))
+                    return
+                }
+                completionHandler(.success(response))
+                
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
-            completionHandler(.success(response))
-            
-        case .failure(let error):
-            completionHandler(.failure(error))
         }
     }
     
