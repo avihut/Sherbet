@@ -189,9 +189,20 @@ final class ChatViewController: UIViewController {
     
     private func updateChat(with newMessage: MessageResponse) {
         let chatMessages = newMessage.messages.map { ChatMessage(side: .remote, text: $0) }
-        messages.append(contentsOf: chatMessages)
+        
+        var accumulatedDelay = 0
+        for message in chatMessages {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(accumulatedDelay)) { [weak self] in
+                self?.messages.append(message)
+            }
+            accumulatedDelay += message.text.count * 30
+        }
+        
         lastQuestion = newMessage.botQuestion
-        inputType = newMessage.inputType
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(accumulatedDelay)) { [weak self] in
+            self?.inputType = newMessage.inputType
+        }
     }
     
     private func send(message: String) {
