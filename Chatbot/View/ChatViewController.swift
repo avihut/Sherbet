@@ -154,6 +154,7 @@ final class ChatViewController: UIViewController {
     
     private func disableInputView() {
         showTextField(focus: false)
+        messageTextField.placeholder = ""
         messageTextField.isEnabled = false
         sendMessageButton.isEnabled = false
     }
@@ -206,6 +207,7 @@ final class ChatViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(accumulatedDelay)) { [weak self] in
             self?.inputType = newMessage.inputType
+            self?.messageTextField.placeholder = newMessage.messageFieldPlaceholder
             self?.saveMessages()
         }
     }

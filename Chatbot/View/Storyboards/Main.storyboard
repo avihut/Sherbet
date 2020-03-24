@@ -71,6 +71,47 @@
                                             <outletCollection property="rightBoundConstraints" destination="kTQ-of-G4u" collectionClass="NSMutableArray" id="gsI-jl-qJI"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="botTypingCell" id="JDn-pP-sXK" customClass="BotTypingCell" customModule="Chatbot" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="88.5" width="414" height="60.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JDn-pP-sXK" id="s4q-U7-DJ7">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bjW-uw-yqg" userLabel="bubbleView">
+                                                    <rect key="frame" x="24" y="8" width="118.5" height="44.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, Bob" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fgb-J7-72P">
+                                                            <rect key="frame" x="20" y="12" width="78.5" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.92540913820000004" green="0.9255420566" blue="0.92538005109999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="Fgb-J7-72P" secondAttribute="bottom" constant="12" id="3yT-0M-cWK"/>
+                                                        <constraint firstItem="Fgb-J7-72P" firstAttribute="centerX" secondItem="bjW-uw-yqg" secondAttribute="centerX" id="DbV-eQ-8hK"/>
+                                                        <constraint firstItem="Fgb-J7-72P" firstAttribute="top" secondItem="bjW-uw-yqg" secondAttribute="top" constant="12" id="Q39-6D-8XH"/>
+                                                        <constraint firstItem="Fgb-J7-72P" firstAttribute="leading" secondItem="bjW-uw-yqg" secondAttribute="leading" constant="20" id="a79-8b-Poc"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Fgb-J7-72P" secondAttribute="trailing" constant="20" id="bth-13-YzE"/>
+                                                        <constraint firstItem="Fgb-J7-72P" firstAttribute="centerY" secondItem="bjW-uw-yqg" secondAttribute="centerY" id="bvT-du-uQ5"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <real key="value" value="22.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="bjW-uw-yqg" secondAttribute="bottom" constant="8" id="1hT-7j-K7G"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bjW-uw-yqg" secondAttribute="trailing" constant="136" id="HG2-4O-x5Z"/>
+                                                <constraint firstItem="bjW-uw-yqg" firstAttribute="top" secondItem="s4q-U7-DJ7" secondAttribute="top" constant="8" id="lWG-3A-dDf"/>
+                                                <constraint firstItem="bjW-uw-yqg" firstAttribute="leading" secondItem="s4q-U7-DJ7" secondAttribute="leading" constant="24" id="noK-wf-rHG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="TbX-eq-sQu" id="H1d-Y1-hSz"/>
