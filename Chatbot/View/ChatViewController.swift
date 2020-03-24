@@ -109,7 +109,7 @@ final class ChatViewController: UIViewController {
     // MARK: Actions
     
     @IBAction private func sendMessageTapped() {
-        guard let text = messageTextField.text else {
+        guard let text = messageTextField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty else {
             return
         }
         
