@@ -56,6 +56,13 @@ final class ChatViewController: UIViewController {
         }
     }
     
+    private var isBotTyping = false {
+        didSet {
+            chatTableView.reloadData()
+            scrollToBottom()
+        }
+    }
+    
     private let chatToken = "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE"
     private var remote: RemoteChatbotServer = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp())
     
@@ -95,6 +102,7 @@ final class ChatViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isBotTyping = true
         remote.startChat(withToken: chatToken, withHandler: handleMessageResponse(result:))
     }
     
@@ -187,7 +195,7 @@ final class ChatViewController: UIViewController {
             return
         }
         let section = numberOfSections(in: chatTableView) - 1
-        chatTableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: section), at: .bottom, animated: true)
+        chatTableView.scrollToRow(at: IndexPath(row: messages.count - (!isBotTyping ? 1 : 0), section: section), at: .bottom, animated: true)
     }
     
     // MARK: Chat Management
@@ -222,6 +230,8 @@ final class ChatViewController: UIViewController {
         messages.append(myMessage)
         disableInputView()
         
+        isBotTyping = true
+        
         remote.send(answer: message, for: lastQuestion, withToken: chatToken, withHandler: handleMessageResponse(result:))
     }
     
@@ -246,6 +256,7 @@ final class ChatViewController: UIViewController {
     // MARK: Remote Interaction
     
     private func handleMessageResponse(result: Result<MessageResponse, Error>) {
+        isBotTyping = false
         guard case Result<MessageResponse, Error>.success(let messageResponse) = result else {
             print("Received an error.")
             return
@@ -271,18 +282,28 @@ extension ChatViewController: UITableViewDataSource {
         if section == 0 && previousMessages.count > 0 {
             return previousMessages.count
         } else if (section == 0 && previousMessages.count == 0) || section == 1 {
-            return messages.count
+            let messageCount = messages.count
+            return isBotTyping ? messageCount + 1 : messageCount
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ChatBubbleTableViewCell.identifier) as! ChatBubbleTableViewCell
-        
+        let cell: UITableViewCell
         if indexPath.section == 0 && previousMessages.count > 0 {
-            cell.chatMessage = previousMessages[indexPath.row]
-        } else if (indexPath.section == 0 && previousMessages.count == 0) || indexPath.section == 1 {
-            cell.chatMessage = messages[indexPath.row]
+            let chatBubbleCell = tableView.dequeueReusableCell(withIdentifier: ChatBubbleTableViewCell.identifier) as! ChatBubbleTableViewCell
+            chatBubbleCell.chatMessage = previousMessages[indexPath.row]
+            cell = chatBubbleCell
+        } else if ((indexPath.section == 0 && previousMessages.count == 0) || indexPath.section == 1) && indexPath.row < messages.count {
+            let chatBubbleCell = tableView.dequeueReusableCell(withIdentifier: ChatBubbleTableViewCell.identifier) as! ChatBubbleTableViewCell
+            chatBubbleCell.chatMessage = messages[indexPath.row]
+            cell = chatBubbleCell
+        } else if ((indexPath.section == 0 && previousMessages.count == 0) || indexPath.section == 1) && indexPath.row == messages.count {
+            let typingCell = tableView.dequeueReusableCell(withIdentifier: BotTypingCell.identifier) as! BotTypingCell
+            typingCell.startAnimating()
+            cell = typingCell
+        } else {
+            fatalError("Invalid cell layout.")
         }
         
         return cell
@@ -294,23 +315,10 @@ extension ChatViewController: UITableViewDataSource {
         }
         return 0
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return 20
-        }
-        return 0
-    }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
         footerView.backgroundColor = .darkGray
         return footerView
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
-        headerView.backgroundColor = .white
-        return headerView
     }
 }

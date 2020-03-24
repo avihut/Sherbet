@@ -25,6 +25,7 @@
 		668E3B58242973670049BF7C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B57242973670049BF7C /* ChatViewController.swift */; };
 		668E3B5A2429803A0049BF7C /* ChatBubbleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B592429803A0049BF7C /* ChatBubbleTableViewCell.swift */; };
 		668E3B622429C1BC0049BF7C /* botTypingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E3B612429C1BC0049BF7C /* botTypingCell.swift */; };
+		668E3B662429C5830049BF7C /* typing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 668E3B652429C5830049BF7C /* typing.gif */; };
 		D55C84EF6BA7CCE6CDFEE314 /* Pods_Chatbot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A021AFB017D2A419DCBB6B24 /* Pods_Chatbot.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		668E3B57242973670049BF7C /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		668E3B592429803A0049BF7C /* ChatBubbleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleTableViewCell.swift; sourceTree = "<group>"; };
 		668E3B612429C1BC0049BF7C /* botTypingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = botTypingCell.swift; sourceTree = "<group>"; };
+		668E3B652429C5830049BF7C /* typing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = typing.gif; path = ../../../../Downloads/typing.gif; sourceTree = "<group>"; };
 		A021AFB017D2A419DCBB6B24 /* Pods_Chatbot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatbot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCB027C2D2CB38C298F3665E /* Pods_ChatbotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatbotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -129,6 +131,7 @@
 				668E3B242428C22F0049BF7C /* Assets.xcassets */,
 				668E3B292428C22F0049BF7C /* Info.plist */,
 				668E3B482428FA790049BF7C /* RemoteChatbotServer.swift */,
+				668E3B652429C5830049BF7C /* typing.gif */,
 			);
 			path = Chatbot;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				668E3B56242973580049BF7C /* Main.storyboard in Resources */,
+				668E3B662429C5830049BF7C /* typing.gif in Resources */,
 				668E3B282428C22F0049BF7C /* LaunchScreen.storyboard in Resources */,
 				668E3B252428C22F0049BF7C /* Assets.xcassets in Resources */,
 			);

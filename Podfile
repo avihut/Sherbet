@@ -6,6 +6,7 @@ target 'Chatbot' do
   use_frameworks!
 
   pod 'UnderKeyboard'
+  pod 'SwiftGifOrigin'
 
   target 'ChatbotTests' do
     inherit! :search_paths

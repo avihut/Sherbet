@@ -1,16 +1,20 @@
 PODS:
+  - SwiftGifOrigin (1.7.0)
   - UnderKeyboard (13.0.2)
 
 DEPENDENCIES:
+  - SwiftGifOrigin
   - UnderKeyboard
 
 SPEC REPOS:
   trunk:
+    - SwiftGifOrigin
     - UnderKeyboard
 
 SPEC CHECKSUMS:
+  SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
   UnderKeyboard: 79ea6feb497af99c1856aaae0ab8ded3c739f745
 
-PODFILE CHECKSUM: 2a027c6940305042d9c1b94bc6c9901dd17064af
+PODFILE CHECKSUM: 25865bdbc9bc3ebdc3e48106896ddf95433e7051
 
 COCOAPODS: 1.9.1

@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import SwiftGifOrigin
 
 
 final class BotTypingCell: UITableViewCell {
     static let identifier = "botTypingCell"
+    
+    @IBOutlet private weak var typingImageView: UIImageView!
+    
+    func startAnimating() {
+        typingImageView.image = UIImage.gif(name: "typing")
+    }
 }
