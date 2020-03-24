@@ -16,32 +16,59 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="W6p-N5-Zbr">
-                                <rect key="frame" x="0.0" y="39" width="414" height="771"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="810"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chatBubbleCell" id="Hh4-70-yGp" customClass="ChatBubbleTableViewCell" customModule="Chatbot" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="60.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hh4-70-yGp" id="79I-Xg-H7J">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uQo-6u-cLX">
-                                                    <rect key="frame" x="20" y="12" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBI-Yo-vJi" userLabel="bubbleView">
+                                                    <rect key="frame" x="24" y="8" width="366" height="44.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, Bob" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uQo-6u-cLX">
+                                                            <rect key="frame" x="20" y="12" width="326" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.92540913820000004" green="0.9255420566" blue="0.92538005109999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="uQo-6u-cLX" firstAttribute="centerY" secondItem="tBI-Yo-vJi" secondAttribute="centerY" id="2KQ-fP-hI0"/>
+                                                        <constraint firstAttribute="trailing" secondItem="uQo-6u-cLX" secondAttribute="trailing" constant="20" id="BU4-Rt-hC9"/>
+                                                        <constraint firstAttribute="bottom" secondItem="uQo-6u-cLX" secondAttribute="bottom" constant="12" id="TZH-cm-3aH"/>
+                                                        <constraint firstItem="uQo-6u-cLX" firstAttribute="top" secondItem="tBI-Yo-vJi" secondAttribute="top" constant="12" id="rAY-8a-oVl"/>
+                                                        <constraint firstItem="uQo-6u-cLX" firstAttribute="centerX" secondItem="tBI-Yo-vJi" secondAttribute="centerX" id="upX-Rq-pKg"/>
+                                                        <constraint firstItem="uQo-6u-cLX" firstAttribute="leading" secondItem="tBI-Yo-vJi" secondAttribute="leading" constant="20" id="x6L-xx-mTq"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <real key="value" value="22.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="uQo-6u-cLX" firstAttribute="leading" secondItem="79I-Xg-H7J" secondAttribute="leading" constant="20" id="BLZ-pi-8Zo"/>
-                                                <constraint firstItem="uQo-6u-cLX" firstAttribute="top" secondItem="79I-Xg-H7J" secondAttribute="top" constant="12" id="Hrn-mM-Tvh"/>
-                                                <constraint firstAttribute="bottom" secondItem="uQo-6u-cLX" secondAttribute="bottom" constant="11" id="xkG-gK-Kps"/>
+                                                <constraint firstItem="tBI-Yo-vJi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="79I-Xg-H7J" secondAttribute="leading" constant="136" id="05u-s5-ohb"/>
+                                                <constraint firstItem="tBI-Yo-vJi" firstAttribute="top" secondItem="79I-Xg-H7J" secondAttribute="top" constant="8" id="1KL-Q7-iZA"/>
+                                                <constraint firstAttribute="bottom" secondItem="tBI-Yo-vJi" secondAttribute="bottom" constant="8" id="Bse-9n-GKM"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tBI-Yo-vJi" secondAttribute="trailing" constant="136" id="FA8-Q8-bPt"/>
+                                                <constraint firstAttribute="trailing" secondItem="tBI-Yo-vJi" secondAttribute="trailing" constant="24" id="kTQ-of-G4u"/>
+                                                <constraint firstItem="tBI-Yo-vJi" firstAttribute="leading" secondItem="79I-Xg-H7J" secondAttribute="leading" constant="24" id="xfp-hX-TaX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bubbleView" destination="tBI-Yo-vJi" id="XHT-rB-49V"/>
                                             <outlet property="messageLabel" destination="uQo-6u-cLX" id="bsB-dG-uSO"/>
                                             <outlet property="textLabel" destination="uQo-6u-cLX" id="TCa-YD-fwt"/>
+                                            <outletCollection property="leftBoundConstraints" destination="xfp-hX-TaX" collectionClass="NSMutableArray" id="eVF-d0-rQs"/>
+                                            <outletCollection property="leftBoundConstraints" destination="FA8-Q8-bPt" collectionClass="NSMutableArray" id="qlM-V5-qac"/>
+                                            <outletCollection property="rightBoundConstraints" destination="05u-s5-ohb" collectionClass="NSMutableArray" id="kzg-g2-6hy"/>
+                                            <outletCollection property="rightBoundConstraints" destination="kTQ-of-G4u" collectionClass="NSMutableArray" id="gsI-jl-qJI"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -167,7 +194,7 @@
                         <constraints>
                             <constraint firstItem="UHB-iL-reV" firstAttribute="bottom" secondItem="dXb-14-F7U" secondAttribute="bottom" id="473-qD-MSH"/>
                             <constraint firstAttribute="bottom" secondItem="f9w-e1-uS1" secondAttribute="bottom" id="7PI-fd-fNp"/>
-                            <constraint firstItem="UHB-iL-reV" firstAttribute="top" secondItem="W6p-N5-Zbr" secondAttribute="top" constant="5" id="7Ud-nm-9Ma"/>
+                            <constraint firstAttribute="top" secondItem="W6p-N5-Zbr" secondAttribute="top" id="7Ud-nm-9Ma"/>
                             <constraint firstItem="UHB-iL-reV" firstAttribute="trailing" secondItem="W6p-N5-Zbr" secondAttribute="trailing" id="D6Q-wn-tVo"/>
                             <constraint firstItem="dXb-14-F7U" firstAttribute="leading" secondItem="UHB-iL-reV" secondAttribute="leading" id="LLz-bB-zAz"/>
                             <constraint firstItem="W6p-N5-Zbr" firstAttribute="leading" secondItem="UHB-iL-reV" secondAttribute="leading" id="LVn-Yw-kZC"/>
@@ -188,6 +215,7 @@
                         <outlet property="messageTextField" destination="PKH-Fy-17F" id="SNf-xF-sky"/>
                         <outlet property="rightResponseButton" destination="07c-w1-yaM" id="Lqp-7K-3z0"/>
                         <outlet property="selectionContainer" destination="dLC-hZ-wgO" id="Eav-CH-0Qo"/>
+                        <outlet property="sendMessageButton" destination="EYm-rO-1tR" id="vtg-Eh-bcl"/>
                         <outlet property="textFieldContainer" destination="KmE-gj-jGi" id="Wh8-bL-4fN"/>
                     </connections>
                 </viewController>

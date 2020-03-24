@@ -27,7 +27,9 @@ final class ChatViewController: UIViewController {
     // MARK: Outlets
     
     @IBOutlet private weak var inputArea: UIView!
+    
     @IBOutlet private weak var bottomFill: UIView!
+    
     @IBOutlet private weak var chatTableView: UITableView!
     @IBOutlet private weak var inputAreaBottomConstraint: NSLayoutConstraint!
     
@@ -39,6 +41,7 @@ final class ChatViewController: UIViewController {
     @IBOutlet private weak var textFieldContainer: UIView!
     
     @IBOutlet private weak var messageTextField: UITextField!
+    @IBOutlet private weak var sendMessageButton: UIButton!
     
     // MARK: Properties
     
@@ -47,6 +50,7 @@ final class ChatViewController: UIViewController {
     private var messages: [ChatMessage] = [] {
         didSet {
             chatTableView.reloadData()
+            scrollToBottom()
         }
     }
     
@@ -79,6 +83,11 @@ final class ChatViewController: UIViewController {
         keyboardObserver.animateKeyboard = { [weak self] height in
             self?.view.layoutIfNeeded()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        disableInputView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -131,7 +140,7 @@ final class ChatViewController: UIViewController {
                 showSelectionButtons(with: options)
             }
         } else {
-            hideInputView()
+            disableInputView()
         }
     }
     
@@ -140,16 +149,21 @@ final class ChatViewController: UIViewController {
         messageTextField.reloadInputViews()
     }
     
-    private func hideInputView() {
-        inputArea.isHidden = true
-        bottomFill.isHidden = true
+    private func disableInputView() {
+        showTextField(focus: false)
+        messageTextField.isEnabled = false
+        sendMessageButton.isEnabled = false
     }
     
-    private func showTextField() {
+    private func showTextField(focus: Bool = true) {
         textFieldContainer.isHidden = false
         selectionContainer.isHidden = true
         
-        messageTextField.becomeFirstResponder()
+        if focus {
+            messageTextField.isEnabled = true
+            sendMessageButton.isEnabled = true
+            messageTextField.becomeFirstResponder()
+        }
     }
     
     private func showSelectionButtons(with options: [String]) {
@@ -188,7 +202,7 @@ final class ChatViewController: UIViewController {
         
         let myMessage = ChatMessage(side: .local, text: message)
         messages.append(myMessage)
-        scrollToBottom()
+        disableInputView()
         
         remote.send(answer: message, for: lastQuestion, withToken: chatToken, withHandler: handleMessageResponse(result:))
     }
