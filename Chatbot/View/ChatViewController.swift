@@ -27,6 +27,7 @@ final class ChatViewController: UIViewController {
     // MARK: Outlets
     
     @IBOutlet private weak var inputArea: UIView!
+    @IBOutlet private weak var bottomFill: UIView!
     @IBOutlet private weak var chatTableView: UITableView!
     @IBOutlet private weak var inputAreaBottomConstraint: NSLayoutConstraint!
     
@@ -129,12 +130,19 @@ final class ChatViewController: UIViewController {
             case .selection(let options):
                 showSelectionButtons(with: options)
             }
+        } else {
+            hideInputView()
         }
     }
     
     private func update(keyboardType: UIKeyboardType) {
         messageTextField.keyboardType = keyboardType
         messageTextField.reloadInputViews()
+    }
+    
+    private func hideInputView() {
+        inputArea.isHidden = true
+        bottomFill.isHidden = true
     }
     
     private func showTextField() {
@@ -157,6 +165,9 @@ final class ChatViewController: UIViewController {
     // MARK: Chat View
     
     private func scrollToBottom() {
+        guard messages.count > 0 else {
+            return
+        }
         chatTableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
     }
     
