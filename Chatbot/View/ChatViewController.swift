@@ -322,3 +322,19 @@ extension ChatViewController: UITableViewDataSource {
         return footerView
     }
 }
+
+
+extension ChatViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch inputType {
+        case .text:
+            return CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: string))
+            
+        case .numeric, .phone:
+            return CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
+            
+        default: break
+        }
+        return true
+    }
+}

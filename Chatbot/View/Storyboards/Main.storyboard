@@ -193,6 +193,9 @@
                                                 <color key="tintColor" red="0.9137254901960784" green="0.0078431372549019607" blue="0.50588235294117645" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="TbX-eq-sQu" id="cK2-CB-NGF"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYm-rO-1tR">
                                                 <rect key="frame" x="366" y="8" width="36" height="36"/>
