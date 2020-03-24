@@ -11,14 +11,15 @@ import UIKit
 import UnderKeyboard
 
 
-struct ChatMessage {
-    enum Side {
-        case local
-        case remote
+struct ChatMessage: Codable {
+    enum Side: Int, Codable {
+        case local = 0
+        case remote = 1
     }
     
     let side: Side
     let text: String
+    var isOldMessage = false
 }
 
 
@@ -47,6 +48,7 @@ final class ChatViewController: UIViewController {
     
     private let keyboardObserver = UnderKeyboardObserver()
     
+    private var previousMessages: [ChatMessage] = []
     private var messages: [ChatMessage] = [] {
         didSet {
             chatTableView.reloadData()
@@ -77,17 +79,18 @@ final class ChatViewController: UIViewController {
             }
             
             self?.inputAreaBottomConstraint.constant = height == 0 ? height : height - requiredSelf.view.safeAreaInsets.bottom
-            self?.scrollToBottom()
         }
         
         keyboardObserver.animateKeyboard = { [weak self] height in
             self?.view.layoutIfNeeded()
+            self?.scrollToBottom()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableInputView()
+        loadMessages()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -182,7 +185,8 @@ final class ChatViewController: UIViewController {
         guard messages.count > 0 else {
             return
         }
-        chatTableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
+        let section = numberOfSections(in: chatTableView) - 1
+        chatTableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: section), at: .bottom, animated: true)
     }
     
     // MARK: Chat Management
@@ -202,6 +206,7 @@ final class ChatViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(accumulatedDelay)) { [weak self] in
             self?.inputType = newMessage.inputType
+            self?.saveMessages()
         }
     }
     
@@ -216,6 +221,24 @@ final class ChatViewController: UIViewController {
         disableInputView()
         
         remote.send(answer: message, for: lastQuestion, withToken: chatToken, withHandler: handleMessageResponse(result:))
+    }
+    
+    private func saveMessages() {
+        let allMessages = previousMessages + messages
+        if let encodedMessages = try? JSONEncoder().encode(allMessages) {
+            UserDefaults.standard.set(encodedMessages, forKey: "messages")
+        }
+    }
+    
+    private func loadMessages() {
+        if let previousMessagesData = UserDefaults.standard.object(forKey: "messages") as? Data, let previousMessages = try? JSONDecoder().decode([ChatMessage].self, from: previousMessagesData) {
+            self.previousMessages = previousMessages
+            for i in 0..<self.previousMessages.count {
+                self.previousMessages[i].isOldMessage = true
+            }
+            
+            chatTableView.reloadData()
+        }
     }
     
     // MARK: Remote Interaction
@@ -235,13 +258,57 @@ extension ChatViewController: UITableViewDelegate {}
 
 
 extension ChatViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if previousMessages.count > 0 {
+            return 2
+        }
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        if section == 0 && previousMessages.count > 0 {
+            return previousMessages.count
+        } else if (section == 0 && previousMessages.count == 0) || section == 1 {
+            return messages.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatBubbleTableViewCell.identifier) as! ChatBubbleTableViewCell
-        cell.chatMessage = messages[indexPath.row]
+        
+        if indexPath.section == 0 && previousMessages.count > 0 {
+            cell.chatMessage = previousMessages[indexPath.row]
+        } else if (indexPath.section == 0 && previousMessages.count == 0) || indexPath.section == 1 {
+            cell.chatMessage = messages[indexPath.row]
+        }
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 && numberOfSections(in: tableView) > 1 {
+            return 1
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 20
+        }
+        return 0
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
+        footerView.backgroundColor = .darkGray
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
+        headerView.backgroundColor = .white
+        return headerView
     }
 }

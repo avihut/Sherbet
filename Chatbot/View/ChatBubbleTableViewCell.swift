@@ -38,6 +38,12 @@ final class ChatBubbleTableViewCell: UITableViewCell {
             setLeftBound()
             setRemoteTheme()
         }
+        
+        if chatMessage.isOldMessage {
+            backgroundColor = UIColor(red: 245 / 256, green: 245 / 256, blue: 245 / 256, alpha: 1.0)
+        } else {
+            backgroundColor = .white
+        }
     }
     
     private func setLeftBound() {
