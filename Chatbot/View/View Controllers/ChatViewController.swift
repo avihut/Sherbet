@@ -6,7 +6,6 @@
 //  Copyright © 2020 Avihu Turzion. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import UnderKeyboard
 
@@ -27,22 +26,10 @@ final class ChatViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var inputArea: UIView!
-    
-    @IBOutlet private weak var bottomFill: UIView!
-    
-    @IBOutlet private weak var chatTableView: UITableView!
+    @IBOutlet private weak var inputArea: MessageInputField!
     @IBOutlet private weak var inputAreaBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet private weak var selectionContainer: UIView!
-    
-    @IBOutlet private weak var leftResponseButton: UIButton!
-    @IBOutlet private weak var rightResponseButton: UIButton!
-    
-    @IBOutlet private weak var textFieldContainer: UIView!
-    
-    @IBOutlet private weak var messageTextField: UITextField!
-    @IBOutlet private weak var sendMessageButton: UIButton!
+    @IBOutlet private weak var chatTableView: UITableView!
     
     // MARK: Properties
     
@@ -63,14 +50,16 @@ final class ChatViewController: UIViewController {
         }
     }
     
-    private let chatToken = "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE"
-    private var remote: RemoteChatbotServer = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp())
+    private var remote: RemoteChatbotServer = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp(), token: "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE")
     
     private var lastQuestion: Question?
     
     private var inputType: AnswerInputType? = .text {
         didSet {
-            updateInputView()
+            inputArea.inputMode = .from(answerInputType: inputType)
+            if inputType != nil {
+                inputArea.becomeFirstResponder()
+            }
         }
     }
     
@@ -92,100 +81,19 @@ final class ChatViewController: UIViewController {
             self?.view.layoutIfNeeded()
             self?.scrollToBottom()
         }
+        
+        inputArea.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        disableInputView()
         loadMessages()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isBotTyping = true
-        remote.startChat(withToken: chatToken, withHandler: handleMessageResponse(result:))
-    }
-    
-    // MARK: Actions
-    
-    @IBAction private func sendMessageTapped() {
-        guard let text = messageTextField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty else {
-            return
-        }
-        
-        messageTextField.text = ""
-        send(message: text)
-    }
-    
-    @IBAction func selectionButtonTapped(_ sender: UIButton) {
-        guard let message = sender.title(for: .normal) else {
-            print("Button unexpectedly doesn't have title.")
-            return
-        }
-        
-        send(message: message)
-    }
-    
-    // MARK: Input View Management
-    
-    private func updateInputView() {
-        if let inputType = inputType {
-            switch inputType {
-            case .numeric:
-                showTextField()
-                update(keyboardType: .numberPad)
-                
-            case .phone:
-                showTextField()
-                update(keyboardType: .phonePad)
-                
-            case .text:
-                showTextField()
-                update(keyboardType: .asciiCapable)
-                
-            case .email:
-                showTextField()
-                update(keyboardType: .emailAddress)
-                
-            case .selection(let options):
-                showSelectionButtons(with: options)
-            }
-        } else {
-            disableInputView()
-        }
-    }
-    
-    private func update(keyboardType: UIKeyboardType) {
-        messageTextField.keyboardType = keyboardType
-        messageTextField.reloadInputViews()
-    }
-    
-    private func disableInputView() {
-        showTextField(focus: false)
-        messageTextField.placeholder = ""
-        messageTextField.isEnabled = false
-        sendMessageButton.isEnabled = false
-    }
-    
-    private func showTextField(focus: Bool = true) {
-        textFieldContainer.isHidden = false
-        selectionContainer.isHidden = true
-        
-        if focus {
-            messageTextField.isEnabled = true
-            sendMessageButton.isEnabled = true
-            messageTextField.becomeFirstResponder()
-        }
-    }
-    
-    private func showSelectionButtons(with options: [String]) {
-        textFieldContainer.isHidden = true
-        selectionContainer.isHidden = false
-        
-        messageTextField.resignFirstResponder()
-        
-        leftResponseButton.setTitle(options[0], for: .normal)
-        rightResponseButton.setTitle(options[1], for: .normal)
+        remote.startChat(with: handleMessageResponse(result:))
     }
     
     // MARK: Chat View
@@ -215,7 +123,7 @@ final class ChatViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(accumulatedDelay)) { [weak self] in
             self?.inputType = newMessage.inputType
-            self?.messageTextField.placeholder = newMessage.messageFieldPlaceholder
+            self?.inputArea.placeholder = newMessage.messageFieldPlaceholder ?? ""
             self?.saveMessages()
         }
     }
@@ -228,11 +136,8 @@ final class ChatViewController: UIViewController {
         
         let myMessage = ChatMessage(side: .local, text: message)
         messages.append(myMessage)
-        disableInputView()
-        
         isBotTyping = true
-        
-        remote.send(answer: message, for: lastQuestion, withToken: chatToken, withHandler: handleMessageResponse(result:))
+        remote.send(answer: message, for: lastQuestion, withHandler: handleMessageResponse(result:))
     }
     
     private func saveMessages() {
@@ -250,6 +155,7 @@ final class ChatViewController: UIViewController {
             }
             
             chatTableView.reloadData()
+            scrollToBottom()
         }
     }
     
@@ -324,17 +230,51 @@ extension ChatViewController: UITableViewDataSource {
 }
 
 
-extension ChatViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        switch inputType {
-        case .text:
-            return CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: string))
-            
-        case .numeric, .phone:
-            return CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
-            
-        default: break
+extension ChatViewController: MessageInputFieldDelegate {
+    func process(message: String) {
+        let inspectedMessage = MessageInspector(message: message)
+        guard inspectedMessage.isValid else {
+            return
         }
-        return true
+        
+        inputArea.clearText()
+        inputType = nil
+        send(message: inspectedMessage.sendableMessage)
+    }
+}
+
+
+extension MessageInputField.InputMode {
+    static func from(answerInputType: AnswerInputType?) -> MessageInputField.InputMode {
+        guard let answerInputType = answerInputType else {
+            return .disabled
+        }
+        
+        switch answerInputType {
+        case .numeric:                return .numbers
+        case .phone:                  return .phone
+        case .text:                   return .text
+        case .email:                  return .email
+        case .selection(let options): return .selection(options: options)
+        }
+    }
+}
+
+
+private struct MessageInspector {
+    let originalMessage: String
+    let sendableMessage: String
+    
+    init(message: String) {
+        originalMessage = message
+        sendableMessage = Self.formatMessageForSending(message)
+    }
+    
+    var isValid: Bool {
+        return !sendableMessage.isEmpty
+    }
+    
+    private static func formatMessageForSending(_ message: String) -> String {
+        return message.trimmingCharacters(in: .whitespaces)
     }
 }

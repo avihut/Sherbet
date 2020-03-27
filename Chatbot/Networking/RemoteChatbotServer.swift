@@ -16,8 +16,8 @@ enum ChatbotServerEndpoint: String {
 
 
 protocol RemoteChatbotServer {
-    func startChat(withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
-    func send(answer: String, for question: Question, withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
+    func startChat(with completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
+    func send(answer: String, for question: Question, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ())
 }
 
 
@@ -27,17 +27,19 @@ struct MockLocalChatbotServer: RemoteChatbotServer {
     }
     
     private let mockServer: Router
+    private let token: String
     
-    init(mockServer: Router) {
+    init(mockServer: Router, token: String) {
         self.mockServer = mockServer
+        self.token = token
     }
     
-    func startChat(withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
+    func startChat(with completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
         let startChatRequest = StartChatRequest(token: token)
         post(to: .startChat, request: startChatRequest, completionHandler: completionHandler)
     }
     
-    func send(answer message: String, for question: Question, withToken token: String, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
+    func send(answer message: String, for question: Question, withHandler completionHandler: @escaping (Result<MessageResponse, Error>) -> ()) {
         let sendAnswerRequest = SendAnswerRequest(token: token, botQuestion: question, message: message)
         post(to: .sendAnswer, request: sendAnswerRequest, completionHandler: completionHandler)
     }
