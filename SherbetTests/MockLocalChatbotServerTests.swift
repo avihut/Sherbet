@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Chatbot
+@testable import Sherbet
 
 
 class MockLocalChatbotServerTests: XCTestCase {
@@ -16,7 +16,7 @@ class MockLocalChatbotServerTests: XCTestCase {
     private let token = "4EmAIn41rJozc3L5c2YAd4oBjDZ6UF34q4W5WMUKP5FpraqngmeFt866dzmE"
 
     override func setUp() {
-        server = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp())
+        server = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp(), token: token)
     }
 
     override func tearDown() {
@@ -28,7 +28,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             fatalError("Start Chat test expected initialized mock server.")
         }
         
-        server.startChat(withToken: token) { result in
+        server.startChat() { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
@@ -43,11 +43,9 @@ class MockLocalChatbotServerTests: XCTestCase {
     }
     
     func testStartChatFailsWithInvalidToken() {
-        guard let server = server else {
-            fatalError("Start Chat test expected initialized mock server.")
-        }
+        let server = MockLocalChatbotServer(mockServer: ChatbotWebApp().createApp(), token: "")
         
-        server.startChat(withToken: "") { result in
+        server.startChat() { result in
             switch result {
             case .success(_): fatalError("Didn't expect Start Chat request to succeed with invalid token.")
             case .failure(_): break
@@ -60,7 +58,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             fatalError("Start Chat test expected initialized mock server.")
         }
         
-        server.startChat(withToken: token) { result in
+        server.startChat() { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
@@ -74,7 +72,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Slartibartfast", for: Question.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Slartibartfast", for: Question.whatIsYourName) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
@@ -88,7 +86,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber, withToken: token) { result in
+        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.doYouAgreeToServiceTerms)
@@ -101,7 +99,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms, withToken: token) { result in
+        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatToDoNowThatYouFinished)
@@ -116,7 +114,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Exit", for: Question.whatToDoNowThatYouFinished, withToken: token) { result in
+        server.send(answer: "Exit", for: Question.whatToDoNowThatYouFinished) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, nil)
@@ -135,7 +133,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             fatalError("Start Chat test expected initialized mock server.")
         }
         
-        server.startChat(withToken: token) { result in
+        server.startChat() { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
@@ -149,7 +147,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Slartibartfast", for: Question.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Slartibartfast", for: Question.whatIsYourName) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
@@ -163,7 +161,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber, withToken: token) { result in
+        server.send(answer: "0505432123", for: Question.whatIsYourPhoneNumber) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.doYouAgreeToServiceTerms)
@@ -176,7 +174,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms, withToken: token) { result in
+        server.send(answer: "Yes", for: Question.doYouAgreeToServiceTerms) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatToDoNowThatYouFinished)
@@ -191,7 +189,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Restart", for: Question.whatToDoNowThatYouFinished, withToken: token) { result in
+        server.send(answer: "Restart", for: Question.whatToDoNowThatYouFinished) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourName)
@@ -205,7 +203,7 @@ class MockLocalChatbotServerTests: XCTestCase {
             }
         }
         
-        server.send(answer: "Majikthighs", for: Question.whatIsYourName, withToken: token) { result in
+        server.send(answer: "Majikthighs", for: Question.whatIsYourName) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.botQuestion, Question.whatIsYourPhoneNumber)
